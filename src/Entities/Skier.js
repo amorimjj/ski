@@ -61,7 +61,16 @@ export class Skier extends Entity {
         this.y -= Constants.SKIER_STARTING_SPEED;
     }
 
+	checkCrashState(direction) {
+		if ( this.direction === Constants.SKIER_DIRECTIONS.CRASH ) {
+			this.setDirection(direction);
+		}
+	}
+
     turnLeft() {
+
+		this.checkCrashState(Constants.SKIER_DIRECTIONS.LEFT);
+
         if(this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
             this.moveSkierLeft();
         }
@@ -71,11 +80,14 @@ export class Skier extends Entity {
     }
 
     turnRight() {
+
+		this.checkCrashState(Constants.SKIER_DIRECTIONS.RIGHT);
+
         if(this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
             this.moveSkierRight();
         }
         else {
-            this.setDirection(this.direction + 1);
+			this.setDirection(this.direction + 1);
         }
     }
 
