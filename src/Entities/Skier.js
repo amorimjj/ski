@@ -1,6 +1,7 @@
 import * as Constants from "../Constants";
 import { Entity } from "./Entity";
 import { intersectTwoRects, Rect } from "../Core/Utils";
+import { AnimationCtrl } from "../Core/AnimationCtrl";
 
 export class Skier extends Entity {
     assetName = Constants.SKIER_DOWN;
@@ -8,33 +9,10 @@ export class Skier extends Entity {
     direction = Constants.SKIER_DIRECTIONS.DOWN;
     speed = Constants.SKIER_STARTING_SPEED;
 
-	jumpAnimationCtrl = {
-		assets: [Constants.SKIER_JUMP1, Constants.SKIER_JUMP2, Constants.SKIER_JUMP3, Constants.SKIER_JUMP4, Constants.SKIER_JUMP5],
-		timer: 0,
-		currentAsset: 0,
-		next() {
-			if ( ! this.isCompleted ) {
-				this.currentAsset++;
-			}
-		},
-		shouldAnimate() {
-			return this.timer++ >= Constants.SKIER_STARTING_SPEED;
-		},
-		reset() {
-			this.timer = 0;
-			this.currentAsset = 0;
-		},
-		get isCompleted() {
-			return this.currentAsset === ( this.assets.length - 1);
-		},
-		get asset() {
-			if (  this.shouldAnimate() ) {
-				this.timer = 0;
-				this.next();
-			}
-			return this.assets[this.currentAsset];
-		}
-	}
+	jumpAnimationCtrl = new AnimationCtrl(
+		[Constants.SKIER_JUMP1, Constants.SKIER_JUMP2, Constants.SKIER_JUMP3, Constants.SKIER_JUMP4, Constants.SKIER_JUMP5],
+		Constants.SKIER_STARTING_SPEED
+	);
 
     constructor(x, y) {
         super(x, y);
