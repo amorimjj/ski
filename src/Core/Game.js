@@ -8,9 +8,9 @@ import { Rect } from './Utils';
 export class Game {
     gameWindow = null;
 
-    constructor() {
+    constructor(canvas) {
         this.assetManager = new AssetManager();
-        this.canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        this.canvas = canvas||new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         this.skier = new Skier(0, 0);
         this.obstacleManager = new ObstacleManager();
 
@@ -78,6 +78,10 @@ export class Game {
                 this.skier.turnDown();
                 event.preventDefault();
                 break;
+			case Constants.KEYS.SPACE:
+				this.skier.jump();
+				event.preventDefault();
+				break;
         }
     }
 }
