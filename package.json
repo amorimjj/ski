@@ -4,7 +4,7 @@
   "description": "Ceros full stack developer code challenge",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --mode development",
+    "dev": "webpack-dev-server --host 0.0.0.0 --mode development",
     "build": "webpack --mode production",
     "test": "jest"
   },

@@ -1,0 +1,15 @@
+version: '3'
+services:
+  node:
+    build:
+      context: .
+      args:
+        WORKDIR: "${PWD}"
+    working_dir: "${PWD}"
+    #command: ["npm", "start"]
+    entrypoint: ["tail", "-f", "/dev/null"]
+    ports:
+      - "8080:8080"
+    volumes:
+      - "${PWD}:${PWD}"
+

@@ -1,0 +1,5 @@
+FROM node:11
+
+ARG WORKDIR
+
+RUN mkdir -p $WORKDIR
