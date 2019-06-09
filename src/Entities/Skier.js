@@ -1,9 +1,8 @@
 import * as Constants from "../Constants";
-import { Entity } from "./Entity";
-import { intersectTwoRects, Rect } from "../Core/Utils";
+import { Persona } from "./Persona";
 import { AnimationCtrl } from "../Core/AnimationCtrl";
 
-export class Skier extends Entity {
+export class Skier extends Persona {
     assetName = Constants.SKIER_DOWN;
 
     direction = Constants.SKIER_DIRECTIONS.DOWN;
@@ -151,31 +150,12 @@ export class Skier extends Entity {
 
     checkIfSkierHitObstacle(obstacleManager, assetManager) {
 
-		const createBounds = (pos, asset, bottomReducer) => new Rect(
-			pos.x - asset.width / 2,
-			pos.y - asset.height / 2,
-			pos.x + asset.width / 2,
-			pos.y - (bottomReducer||0)
-        );
-
-        const asset = assetManager.getAsset(this.assetName);
+		const obstacle = this.checkIfHitObstacle(obstacleManager, assetManager);
 		
-		const skierBounds = createBounds(this, asset, asset.height / 4);
+		if ( ! obstacle || ( this.isJumping() && this.canJump(obstacle.getAssetName()) ) ) {
+				return;
+		}
 
-        const collision = obstacleManager.getObstacles().find((obstacle) => {
-
-			if ( this.isJumping() && this.canJump(obstacle.getAssetName()) ) {
-				return false;
-			}
-			
-            const obstacleAsset = assetManager.getAsset(obstacle.getAssetName());
-            const obstacleBounds = createBounds(obstacle.getPosition(), obstacleAsset);
-
-            return intersectTwoRects(skierBounds, obstacleBounds);
-        });
-        
-		if(collision) {
-			this.handleCollision(collision);
-        }
-    };
+		this.handleCollision(obstacle);
+    }
 }
