@@ -41,6 +41,9 @@ export class ObstacleManager {
     }
 
     placeNewObstacle(gameWindow, previousGameWindow) {
+
+		previousGameWindow = previousGameWindow||{ left: 0, top: 0 };
+
         const shouldPlaceObstacle = randomInt(1, NEW_OBSTACLE_CHANCE);
         if(shouldPlaceObstacle !== NEW_OBSTACLE_CHANCE) {
             return;
