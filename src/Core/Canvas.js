@@ -45,4 +45,22 @@ export class Canvas {
 
         this.ctx.drawImage(image, x, y, width, height);
     }
+
+	drawText(text, font, color, align) {
+		let x, y;
+		this.ctx.font = font;
+		this.ctx.fillStyle = color;
+		
+		if ( align === "right" ) {
+			x = this.width - this.ctx.measureText(text).width;
+			y = parseInt(this.ctx.font);
+		}
+		
+		if ( align === "center" ) {
+			x = (this.width/2) - (this.ctx.measureText(text).width / 2);
+			y = (this.height/2) - (parseInt(this.ctx.font));
+		}
+
+		this.ctx.fillText(text, x, y); 
+	}
 }
