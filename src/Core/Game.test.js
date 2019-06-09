@@ -29,8 +29,6 @@ describe('Testing game controls', () => {
 		movingExpects = { [KEYS.LEFT] : 0, [KEYS.RIGHT] : 0, [KEYS.UP] :0, [KEYS.DOWN] : 0, [KEYS.JUMP] : 0 };
 	});
 
-
-
 	describe('when game is running', () => {
 		
 		beforeEach(() => {
@@ -89,7 +87,7 @@ describe('Testing game controls', () => {
 
 	});
 
-	describe('when game is paused', () => {
+	describe('when game is not running', () => {
 
 		beforeEach(() => {
 			game.isRunning = jest.fn();
@@ -228,6 +226,42 @@ describe('Testing Draw game window', () => {
 		game.drawGameWindow();
 		expect(skier.draw.mock.calls.length).toBe(0);
 	});
+
+	test('when gameOver is false SHOULDNT draw gameOverMessage', () => {
+		game.gameOver = false;
+		game.gameOverMessage.draw = jest.fn();
+		game.drawGameWindow();
+		expect(game.gameOverMessage.draw.mock.calls.length).toBe(0);
+	});
+
+	test('when gameOver is true SHOULD draw gameOverMessage', () => {
+		game.gameOver = true;
+		game.gameOverMessage.draw = jest.fn();
+		game.drawGameWindow();
+		expect(game.gameOverMessage.draw.mock.calls.length).toBe(1);
+	});
+	
+	test('when paused is false SHOULDNT draw pausedMessage', () => {
+		game.paused = false;
+		game.pausedMessage.draw = jest.fn();
+		game.drawGameWindow();
+		expect(game.pausedMessage.draw.mock.calls.length).toBe(0);
+	});
+
+	test('when paused is true SHOULD draw pausedMessage', () => {
+		game.paused = true;
+		game.pausedMessage.draw = jest.fn();
+		game.drawGameWindow();
+		expect(game.pausedMessage.draw.mock.calls.length).toBe(1);
+	});
+
+	test('when paused is true and gameOver is true SHOULDNT draw pausedMessage', () => {
+		game.paused = true;
+		game.gameOver = true;
+		game.pausedMessage.draw = jest.fn();
+		game.drawGameWindow();
+		expect(game.pausedMessage.draw.mock.calls.length).toBe(0);
+	});
 });
 
 describe('Testing Starting rhino chasing', () => {
@@ -259,4 +293,57 @@ describe('Testing Starting rhino chasing', () => {
 		game.startRhinoChasing();
 		expect(game.rhino).toBe(rhino);
 	});
+});
+
+describe('Testing startGame', () => {
+
+	test('gameOver SHOULD be definded as false', () => {
+		game.gameOver = true;
+		game.startGame();
+		expect(game.gameOver).toBe(false);
+	});
+
+	test('paused SHOULD be definded as false', () => {
+		game.paused = true;
+		game.startGame();
+		expect(game.paused).toBe(false);
+	});
+	
+	test('rhino SHOULD be definded as null', () => {
+		game.rhino = {};
+		game.startGame();
+		expect(game.rhino).toBe(null);
+	});
+
+	test('skier SHOULD be a new instance', () => {
+		game.startGame();
+		expect(game.skier).not.toBe(skier);
+	});
+});
+
+describe('Testing pauseRestart', () => {
+
+	test('when gameOver is false SHOULD toggle paused', () => {
+		game.gameOver = false;
+		game.paused = false;
+		game.pauseRestart();
+		expect(game.paused).toBe(true);
+		game.pauseRestart();
+		expect(game.paused).toBe(false);
+	});
+	
+	test('when gameOver is false SHOULDNT call startGame', () => {
+		game.gameOver = false;
+		game.startGame = jest.fn();
+		game.pauseRestart();
+		expect(game.startGame.mock.calls.length).toBe(0);
+	});
+
+	test('when gameOver is true SHOULD call startGame', () => {
+		game.gameOver = true;
+		game.startGame = jest.fn();
+		game.pauseRestart();
+		expect(game.startGame.mock.calls.length).toBe(1);
+	});
+
 });

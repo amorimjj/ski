@@ -86,6 +86,14 @@ export class Game {
 	}
 
     updateGameWindow() {
+		
+		if ( this.gameOver ) {
+			this.rhino.eat();
+		}
+
+		if ( ! this.isRunning() ) {
+			return;
+		}
 
 		this.startRhinoChasing();
 
@@ -93,10 +101,6 @@ export class Game {
 			this.rhino.chase(this.skier, this.obstacleManager, this.assetManager);
 		}
 		
-		if ( ! this.isRunning() ) {
-			return;
-		}
-
         const previousGameWindow = this.gameWindow;
         this.calculateGameWindow();
 
@@ -122,7 +126,7 @@ export class Game {
         this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
 		this.score.draw(this.canvas, this.skier.skiingDistance);
 
-		if ( this.isSkierCaught() ) {
+		if ( this.gameOver ) {
 			this.gameOverMessage.draw(this.canvas);
 		}
 
