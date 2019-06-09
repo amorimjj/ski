@@ -8,6 +8,8 @@ export class Skier extends Persona {
     direction = Constants.SKIER_DIRECTIONS.DOWN;
     speed = Constants.SKIER_STARTING_SPEED;
 
+	skiingDistance = 0;
+
 	jumpAnimationCtrl = new AnimationCtrl(
 		[Constants.SKIER_JUMP1, Constants.SKIER_JUMP2, Constants.SKIER_JUMP3, Constants.SKIER_JUMP4, Constants.SKIER_JUMP5],
 		Constants.SKIER_STARTING_SPEED
@@ -26,6 +28,13 @@ export class Skier extends Persona {
         this.assetName = Constants.SKIER_DIRECTION_ASSET[this.direction];
     }
 
+	updateSkiingDistance() {
+		if ( [Constants.SKIER_DIRECTIONS.CRASH,Constants.SKIER_DIRECTIONS.LEFT,Constants.SKIER_DIRECTIONS.RIGHT].includes(this.direction) ) {
+			return;
+		}
+		this.skiingDistance++;
+	}
+
     move() {
         switch(this.direction) {
             case Constants.SKIER_DIRECTIONS.LEFT_DOWN:
@@ -41,6 +50,8 @@ export class Skier extends Persona {
 				this.jumpSkier();
 				break;
         }
+
+		this.updateSkiingDistance();
     }
 
     moveSkierLeft() {
