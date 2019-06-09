@@ -2,10 +2,10 @@
   "name": "ceros-ski",
   "version": "1.0.0",
   "description": "Ceros full stack developer code challenge",
-  "main": "index.js",
   "scripts": {
+	"start": "node server.js",
     "dev": "webpack-dev-server --host 0.0.0.0 --mode development",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && ln -sf ../img ./dist/",
     "test": "jest"
   },
   "repository": {
@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "css-loader": "^2.1.1",
+    "node-static": "^0.7.11",
     "style-loader": "^0.23.1"
   }
 }
