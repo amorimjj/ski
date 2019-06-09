@@ -5,7 +5,7 @@ import { Game } from './Game';
 let game, skier, rhino, canvas, gameWindow;
 
 beforeEach(() => {
-	canvas = { setDrawOffset:() => { } };
+	canvas = { setDrawOffset:() => { }, drawText: () => { } };
 	gameWindow = { left: 0, top: 0 };
 	game = new Game(canvas);
 	game.assetManager = { getAsset: () => ({ width: 10, height: 10 }) };
@@ -13,7 +13,7 @@ beforeEach(() => {
 	skier = game.skier;
 });
 
-describe('Testing skier controls', () => {
+describe('Testing game controls', () => {
 
 	let ev, movingExpects;
 
@@ -29,47 +29,102 @@ describe('Testing skier controls', () => {
 		movingExpects = { [KEYS.LEFT] : 0, [KEYS.RIGHT] : 0, [KEYS.UP] :0, [KEYS.DOWN] : 0, [KEYS.JUMP] : 0 };
 	});
 
-	afterEach(() => {
-		expect(ev.preventDefault.mock.calls.length).toBe(1);
+
+
+	describe('when game is running', () => {
+		
+		beforeEach(() => {
+			game.isRunning = jest.fn();
+			game.isRunning.mockReturnValue(true);
+		});
+
+		afterEach(() => {
+			expect(ev.preventDefault.mock.calls.length).toBe(1);
+		});
+	
+		let skierMoveChecker = (movingTo) => {
+			movingExpects[movingTo] = 1;
+	    	expect(skier.turnLeft.mock.calls.length).toBe(movingExpects[KEYS.LEFT]);
+	    	expect(skier.turnRight.mock.calls.length).toBe(movingExpects[KEYS.RIGHT]);
+	    	expect(skier.turnUp.mock.calls.length).toBe(movingExpects[KEYS.UP]);
+	    	expect(skier.turnDown.mock.calls.length).toBe(movingExpects[KEYS.DOWN]);
+	    	expect(skier.jump.mock.calls.length).toBe(movingExpects[KEYS.JUMP]);
+		}
+		test('enter key SHOULD call pauseRestart', () => {
+			game.pauseRestart = jest.fn();	
+			ev.which = KEYS.ENTER;
+			game.handleKeyDown(ev);
+			expect(game.pauseRestart.mock.calls.length).toBe(1);
+		});
+	
+		test('left key SHOULD call "turnLeft" from skier', () => {
+			ev.which = KEYS.LEFT;
+			game.handleKeyDown(ev);
+			skierMoveChecker(KEYS.LEFT);
+		});
+	
+		test('left righ SHOULD call "turnRight" from skier', () => {
+			ev.which = KEYS.RIGHT;
+			game.handleKeyDown(ev);
+			skierMoveChecker(KEYS.RIGHT);
+		});
+	
+		test('up key SHOULD call "turnUp" from skier', () => {
+			ev.which = KEYS.UP;
+			game.handleKeyDown(ev);
+			skierMoveChecker(KEYS.UP);
+		});
+	
+		test('down key SHOULD call "turnDown" from skier', () => {
+			ev.which = KEYS.DOWN;
+			game.handleKeyDown(ev);
+			skierMoveChecker(KEYS.DOWN);
+		});
+	
+		test('space key SHOULD call "jump" from skier', () => {
+			ev.which = KEYS.SPACE;
+			game.handleKeyDown(ev);
+			skierMoveChecker(KEYS.JUMP);
+		});
+
 	});
 
-	let skierMoveChecker = (movingTo) => {
-		movingExpects[movingTo] = 1;
-    	expect(skier.turnLeft.mock.calls.length).toBe(movingExpects[KEYS.LEFT]);
-    	expect(skier.turnRight.mock.calls.length).toBe(movingExpects[KEYS.RIGHT]);
-    	expect(skier.turnUp.mock.calls.length).toBe(movingExpects[KEYS.UP]);
-    	expect(skier.turnDown.mock.calls.length).toBe(movingExpects[KEYS.DOWN]);
-    	expect(skier.jump.mock.calls.length).toBe(movingExpects[KEYS.JUMP]);
-	}
+	describe('when game is paused', () => {
 
-	test('left key SHOULD call "turnLeft" from skier', () => {
-		ev.which = KEYS.LEFT;
-		game.handleKeyDown(ev);
-		skierMoveChecker(KEYS.LEFT);
-	});
+		beforeEach(() => {
+			game.isRunning = jest.fn();
+			game.isRunning.mockReturnValue(false);
+		});
 
-	test('left righ SHOULD call "turnRight" from skier', () => {
-		ev.which = KEYS.RIGHT;
-		game.handleKeyDown(ev);
-		skierMoveChecker(KEYS.RIGHT);
-	});
-
-	test('up key SHOULD call "turnUp" from skier', () => {
-		ev.which = KEYS.UP;
-		game.handleKeyDown(ev);
-		skierMoveChecker(KEYS.UP);
-	});
-
-	test('down key SHOULD call "turnDown" from skier', () => {
-		ev.which = KEYS.DOWN;
-		game.handleKeyDown(ev);
-		skierMoveChecker(KEYS.DOWN);
-	});
-
-	test('space key SHOULD call "jump" from skier', () => {
-		ev.which = KEYS.SPACE;
-		game.handleKeyDown(ev);
-		skierMoveChecker(KEYS.JUMP);
+		test('left key SHOULD call "turnLeft" from skier', () => {
+			ev.which = KEYS.LEFT;
+			game.handleKeyDown(ev);
+    		expect(skier.turnLeft.mock.calls.length).toBe(0);
+		});
+	
+		test('left righ SHOULD call "turnRight" from skier', () => {
+			ev.which = KEYS.RIGHT;
+			game.handleKeyDown(ev);
+    		expect(skier.turnRight.mock.calls.length).toBe(0);
+		});
+	
+		test('up key SHOULD call "turnUp" from skier', () => {
+			ev.which = KEYS.UP;
+			game.handleKeyDown(ev);
+    		expect(skier.turnUp.mock.calls.length).toBe(0);
+		});
+	
+		test('down key SHOULD call "turnDown" from skier', () => {
+			ev.which = KEYS.DOWN;
+			game.handleKeyDown(ev);
+    		expect(skier.turnDown.mock.calls.length).toBe(0);
+		});
+	
+		test('space key SHOULD call "jump" from skier', () => {
+			ev.which = KEYS.SPACE;
+			game.handleKeyDown(ev);
+    		expect(skier.jump.mock.calls.length).toBe(0);
+		});
 	});
 });
 

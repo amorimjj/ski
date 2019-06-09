@@ -8,19 +8,32 @@ import { ObstacleManager } from "../Entities/Obstacles/ObstacleManager";
 import { Rect } from './Utils';
 
 export class Game {
-    gameWindow = null;
+    
+	gameWindow = null;
 	rhino = null;
 
-    constructor(canvas) {
+	gameOver = null;
+	paused = null;
+    
+	constructor(canvas) {
         this.assetManager = new AssetManager();
         this.canvas = canvas||new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        this.skier = new Skier(0, 0);
         this.obstacleManager = new ObstacleManager();
 		this.score = new Text("30px Verdana", "#C70039", "right");
 		this.gameOverMessage = new Text("40px Courier", "#1B2631", "center", "GAME OVER");
+		this.pausedMessage = new Text("40px Courier", "#1B2631", "center", "PAUSE");
+
+		this.startGame();
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
     }
+
+	startGame() {
+		this.gameOver = false;
+		this.paused = false;
+        this.skier = new Skier(0, 0);
+		this.rhino = null;
+	}
 
     init() {
         this.obstacleManager.placeInitialObstacles();
@@ -30,11 +43,26 @@ export class Game {
         await this.assetManager.loadAssets(Constants.ASSETS);
     }
 
-    run() {
-        this.canvas.clearCanvas();
+	pauseRestart() {
+		if ( this.gameOver ) {
+			return this.startGame();
+		}
+		this.paused = !this.paused;
+	}
 
+	isRunning() {
+		return !this.paused && !this.gameOver;
+	}
+
+    run() {
+        
+		this.canvas.clearCanvas();
         this.updateGameWindow();
         this.drawGameWindow();
+
+		if ( this.isSkierCaught() ) {
+			this.gameOver = true;
+		}
 
         requestAnimationFrame(this.run.bind(this));
     }
@@ -63,6 +91,10 @@ export class Game {
 
 		if ( this.isRhinoChasing() ) {
 			this.rhino.chase(this.skier, this.obstacleManager, this.assetManager);
+		}
+		
+		if ( ! this.isRunning() ) {
+			return;
 		}
 
         const previousGameWindow = this.gameWindow;
@@ -93,6 +125,10 @@ export class Game {
 		if ( this.isSkierCaught() ) {
 			this.gameOverMessage.draw(this.canvas);
 		}
+
+		if ( this.paused && ! this.gameOver ) {
+			this.pausedMessage.draw(this.canvas);
+		}
     }
 
     calculateGameWindow() {
@@ -104,6 +140,16 @@ export class Game {
     }
 
     handleKeyDown(event) {
+		
+		if ( event.which === Constants.KEYS.ENTER ) {
+			this.pauseRestart();
+			event.preventDefault();
+		}
+
+		if ( ! this.isRunning() ) {
+			return;
+		}
+
         switch(event.which) {
             case Constants.KEYS.LEFT:
                 this.skier.turnLeft();
