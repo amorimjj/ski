@@ -8,12 +8,12 @@ import { Rect } from './Utils';
 
 export class Game {
     gameWindow = null;
+	rhino = null;
 
     constructor(canvas) {
         this.assetManager = new AssetManager();
         this.canvas = canvas||new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         this.skier = new Skier(0, 0);
-		this.rhino = new Rhino(100, 100);
         this.obstacleManager = new ObstacleManager();
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
@@ -36,15 +36,38 @@ export class Game {
         requestAnimationFrame(this.run.bind(this));
     }
 
+	createRhino() {
+		this.rhino = new Rhino(this.skier.x, this.skier.y - Constants.RHINO_STARTING_DIFERENCE_POSITION);
+	}
+
+	startRhinoChasing() {
+		if ( ! this.isRhinoChasing() && this.skier.skiingDistance >= Constants.SKIER_DISTANCE_ADVANTAGE ) {
+			this.createRhino();
+		}
+	}
+
+	isRhinoChasing() {
+		return this.rhino !== null;
+	}
+
+	isSkierCaught() {
+		return this.isRhinoChasing() && this.rhino.caught(this.skier);
+	}
+
     updateGameWindow() {
-		this.rhino.chase(this.skier, this.obstacleManager, this.assetManager);
+
+		this.startRhinoChasing();
+
+		if ( this.isRhinoChasing() ) {
+			this.rhino.chase(this.skier, this.obstacleManager, this.assetManager);
+		}
 
         const previousGameWindow = this.gameWindow;
         this.calculateGameWindow();
 
         this.obstacleManager.placeNewObstacle(this.gameWindow, previousGameWindow);
 		
-		if ( ! this.rhino.caught(this.skier) ) {
+		if ( ! this.isSkierCaught() ) {
         	this.skier.move();
         	this.skier.checkIfSkierHitObstacle(this.obstacleManager, this.assetManager);
 		}
@@ -53,9 +76,11 @@ export class Game {
     drawGameWindow() {
         this.canvas.setDrawOffset(this.gameWindow.left, this.gameWindow.top);
 
-		this.rhino.draw(this.canvas, this.assetManager);
+		if ( this.isRhinoChasing() ) {
+			this.rhino.draw(this.canvas, this.assetManager);
+		}
 		
-		if ( ! this.rhino.caught(this.skier) ) {
+		if ( ! this.isSkierCaught() ) {
         	this.skier.draw(this.canvas, this.assetManager);
 		}
 

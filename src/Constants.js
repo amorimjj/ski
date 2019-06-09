@@ -29,7 +29,9 @@ export const RHINO_LIFT6 = 'rhinoLift6';
 
 export const SKIER_STARTING_SPEED = 10;
 export const SKIER_DIAGONAL_SPEED_REDUCER = 1.4142;
+export const SKIER_DISTANCE_ADVANTAGE = 100;
 
+export const RHINO_STARTING_DIFERENCE_POSITION = 150;
 export const RHINO_STARTING_SPEED = 5;
 
 export const ASSETS = {
