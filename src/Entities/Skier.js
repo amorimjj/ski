@@ -41,7 +41,7 @@ export class Skier extends Persona {
                 this.moveSkierLeftDown();
                 break;
             case Constants.SKIER_DIRECTIONS.DOWN:
-                this.moveSkierDown();
+                this.moveDown();
                 break;
             case Constants.SKIER_DIRECTIONS.RIGHT_DOWN:
                 this.moveSkierRightDown();
@@ -54,37 +54,20 @@ export class Skier extends Persona {
 		this.updateSkiingDistance();
     }
 
-    moveSkierLeft() {
-        this.x -= Constants.SKIER_STARTING_SPEED;
-    }
-
     moveSkierLeftDown() {
         this.x -= this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
         this.y += this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
     }
-
-    moveSkierDown() {
-        this.y += this.speed;
-    }
-
     moveSkierRightDown() {
         this.x += this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
         this.y += this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
-    }
-
-    moveSkierRight() {
-        this.x += Constants.SKIER_STARTING_SPEED;
-    }
-
-    moveSkierUp() {
-        this.y -= Constants.SKIER_STARTING_SPEED;
     }
 
 	jumpSkier() {
 		if ( this.jumpAnimationCtrl.isCompleted ) {
 			return this.setDirection(Constants.SKIER_DIRECTIONS.DOWN);
 		}
-		this.moveSkierDown();
+		this.moveDown();
 		this.assetName = this.jumpAnimationCtrl.asset;
 	}
 
@@ -103,7 +86,7 @@ export class Skier extends Persona {
 		this.checkCrashState(Constants.SKIER_DIRECTIONS.LEFT);
 
         if(this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
-            return this.moveSkierLeft();
+            return this.moveLeft();
         }
         
 		this.setDirection(this.direction - 1);
@@ -118,7 +101,7 @@ export class Skier extends Persona {
 		this.checkCrashState(Constants.SKIER_DIRECTIONS.RIGHT);
 
         if( this.direction === Constants.SKIER_DIRECTIONS.RIGHT ) {
-            return this.moveSkierRight();
+            return this.moveRight();
         }
 
 		this.setDirection(this.direction + 1);
@@ -126,7 +109,7 @@ export class Skier extends Persona {
 
     turnUp() {
         if(this.direction === Constants.SKIER_DIRECTIONS.LEFT || this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
-            this.moveSkierUp();
+            this.moveUp();
         }
     }
 

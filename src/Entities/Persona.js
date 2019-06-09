@@ -26,4 +26,20 @@ export class Persona extends Entity {
 
 		return collision;
     }
+
+    moveLeft() {
+        this.x -= this.speed;
+    }
+
+    moveDown() {
+        this.y += this.speed;
+    }
+
+    moveRight() {
+        this.x += this.speed;
+    }
+
+    moveUp() {
+        this.y -= this.speed;
+    }
 }

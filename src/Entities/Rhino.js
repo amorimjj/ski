@@ -34,9 +34,9 @@ export class Rhino extends Persona  {
 		}
 
 		if ( from < this.x ) {
-			return this.moveRhinoLeft();
+			return this.moveLeft();
 		}
-		this.moveRhinoRight();
+		this.moveRight();
 	}
 
 	updateY(from) {
@@ -46,9 +46,9 @@ export class Rhino extends Persona  {
 		}
 
 		if ( from > this.y ) {
-			return this.moveRhinoDown();
+			return this.moveDown();
 		}
-		this.moveRhinoUp();
+		this.moveUp();
 	}
 
     chase(skier, obstacleManager, assetManager) {
@@ -68,23 +68,7 @@ export class Rhino extends Persona  {
 		this.updateX(skier.x);
 		this.updateY(skier.y);
     }
-
-    moveRhinoLeft() {
-        this.x -= this.speed;
-    }
-
-    moveRhinoDown() {
-        this.y += this.speed;
-    }
-
-    moveRhinoRight() {
-        this.x += this.speed;
-    }
-
-    moveRhinoUp() {
-        this.y -= this.speed;
-    }
-
+	
 	eat() {
 		if ( ! this.eatingAnimationCtrl.isCompleted ) {
 			this.assetName = this.eatingAnimationCtrl.asset;
@@ -97,13 +81,13 @@ export class Rhino extends Persona  {
 		const collisionAsset = assetManager.getAsset(collision.assetName);
 		
 		if ( ( this.y + rhinoAsset.height ) > collision.y ) {
-			this.moveRhinoDown();
+			this.moveDown();
 		}
 		
 		if ( (collision.x + collisionAsset.width) - (this.x - Constants.RHINO_STARTING_SPEED) <= Constants.RHINO_STARTING_SPEED ) {
-			return this.moveRhinoRight();
+			return this.moveRight();
 		}	
 		
-		this.moveRhinoLeft();
+		this.moveLeft();
 	}
 }

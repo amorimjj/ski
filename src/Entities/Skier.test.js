@@ -35,7 +35,7 @@ describe('when skier crashed', () => {
 		});
 
 		test('turn left SHOULD move skier to left side', () => {
-			skier.moveSkierLeft = fake;
+			skier.moveLeft = fake;
 			skier.turnLeft();
     		expect(fake.mock.calls.length).toBe(1);
 		});
@@ -48,7 +48,7 @@ describe('when skier crashed', () => {
 		});
 
 		test('turn right SHOULD move skier to right side', () => {
-			skier.moveSkierRight = fake;
+			skier.moveRight = fake;
 			skier.turnRight();
     		expect(fake.mock.calls.length).toBe(1);
 		});
