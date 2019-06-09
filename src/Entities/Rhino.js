@@ -5,7 +5,7 @@ import { AnimationCtrl } from "../Core/AnimationCtrl";
 export class Rhino extends Persona  {
     assetName = Constants.RHINO_DOWN1;
 	
-	distanceReducer = 5;
+	distanceReducer = 25;
     
 	speed = Constants.RHINO_STARTING_SPEED;
 

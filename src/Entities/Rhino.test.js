@@ -30,13 +30,13 @@ describe('Rhino update(X|Y)', () => {
 	
 	test('when skier x is less then rhino x should decrease rhino x', () => {
 		let currentX = rhino.x;
-		rhino.updateX(-10);
+		rhino.updateX(-40);
     	expect(rhino.x).toBe(currentX - Constants.RHINO_STARTING_SPEED);
 	});
 
 	test('when skier y is less then rhino y should decrease rhino y', () => {
 		let currentY = rhino.y;
-		rhino.updateY(-10);
+		rhino.updateY(-40);
     	expect(rhino.y).toBe(currentY - Constants.RHINO_STARTING_SPEED);
 	});
 	
