@@ -1,6 +1,7 @@
 import * as Constants from "../Constants";
 import { AssetManager } from "./AssetManager";
 import { Canvas } from './Canvas';
+import { Text } from "./Text";
 import { Skier } from "../Entities/Skier";
 import { Rhino } from "../Entities/Rhino";
 import { ObstacleManager } from "../Entities/Obstacles/ObstacleManager";
@@ -15,6 +16,8 @@ export class Game {
         this.canvas = canvas||new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         this.skier = new Skier(0, 0);
         this.obstacleManager = new ObstacleManager();
+		this.score = new Text("30px Verdana", "#C70039", "right");
+		this.gameOverMessage = new Text("40px Courier", "#1B2631", "center", "GAME OVER");
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
     }
@@ -85,6 +88,11 @@ export class Game {
 		}
 
         this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
+		this.score.draw(this.canvas, this.skier.skiingDistance);
+
+		if ( this.isSkierCaught() ) {
+			this.gameOverMessage.draw(this.canvas);
+		}
     }
 
     calculateGameWindow() {
