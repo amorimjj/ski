@@ -17,9 +17,20 @@ export const TREE_CLUSTER = 'treeCluster';
 export const ROCK1 = 'rock1';
 export const ROCK2 = 'rock2';
 export const JUMP_RAMP = 'jumpRamp';
+export const RHINO_DOWN1 = 'rhinoDown1';
+export const RHINO_DOWN2 = 'rhinoDown2';
+export const RHINO_DOWN3 = 'rhinoDown3';
+export const RHINO_LIFT1 = 'rhinoLift1';
+export const RHINO_LIFT2 = 'rhinoLift2';
+export const RHINO_LIFT3 = 'rhinoLift3';
+export const RHINO_LIFT4 = 'rhinoLift4';
+export const RHINO_LIFT5 = 'rhinoLift5';
+export const RHINO_LIFT6 = 'rhinoLift6';
 
 export const SKIER_STARTING_SPEED = 10;
 export const SKIER_DIAGONAL_SPEED_REDUCER = 1.4142;
+
+export const RHINO_STARTING_SPEED = 5;
 
 export const ASSETS = {
     [SKIER_CRASH]: 'img/skier_crash.png',
@@ -37,7 +48,16 @@ export const ASSETS = {
     [TREE_CLUSTER] : 'img/tree_cluster.png',
     [ROCK1] : 'img/rock_1.png',
     [ROCK2] : 'img/rock_2.png',
-    [JUMP_RAMP] : 'img/jump_ramp.png'
+    [JUMP_RAMP] : 'img/jump_ramp.png',
+    [RHINO_DOWN1] : 'img/rhino_default.png',
+    [RHINO_DOWN2] : 'img/rhino_run_left.png',
+    [RHINO_DOWN3] : 'img/rhino_run_left_2.png',
+    [RHINO_LIFT1] : 'img/rhino_lift.png',
+    [RHINO_LIFT2] : 'img/rhino_lift_mouth_open.png',
+    [RHINO_LIFT3] : 'img/rhino_lift_eat_1.png',
+    [RHINO_LIFT4] : 'img/rhino_lift_eat_2.png',
+    [RHINO_LIFT5] : 'img/rhino_lift_eat_3.png',
+    [RHINO_LIFT6] : 'img/rhino_lift_eat_4.png'
 };
 
 export const SKIER_DIRECTIONS = {

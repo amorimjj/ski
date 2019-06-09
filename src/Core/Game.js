@@ -37,22 +37,28 @@ export class Game {
     }
 
     updateGameWindow() {
-        this.skier.move();
-		this.rhino.move();
+		this.rhino.chase(this.skier, this.obstacleManager, this.assetManager);
 
         const previousGameWindow = this.gameWindow;
         this.calculateGameWindow();
 
         this.obstacleManager.placeNewObstacle(this.gameWindow, previousGameWindow);
-
-        this.skier.checkIfSkierHitObstacle(this.obstacleManager, this.assetManager);
+		
+		if ( ! this.rhino.caught(this.skier) ) {
+        	this.skier.move();
+        	this.skier.checkIfSkierHitObstacle(this.obstacleManager, this.assetManager);
+		}
     }
 
     drawGameWindow() {
         this.canvas.setDrawOffset(this.gameWindow.left, this.gameWindow.top);
 
-        this.skier.draw(this.canvas, this.assetManager);
 		this.rhino.draw(this.canvas, this.assetManager);
+		
+		if ( ! this.rhino.caught(this.skier) ) {
+        	this.skier.draw(this.canvas, this.assetManager);
+		}
+
         this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
     }
 
