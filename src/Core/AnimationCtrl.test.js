@@ -25,6 +25,13 @@ describe('Jump animation control tests', () => {
 		expect(ctrl.isCompleted).toBe(true);
 	});
 
+	test('isCompleted should be true if currentAsset is equal than assets.length - 1', () => {
+		ctrl.currentAsset = 3;
+		ctrl.timer = 10;
+		let a1 = ctrl.asset;
+		expect(ctrl.isCompleted).toBe(true);
+	});
+
 	test('should return same asset if timer is less than SKIER_STARTING_SPEED', () => {
 		let a1 = ctrl.asset;
 		ctrl.timer = 5;

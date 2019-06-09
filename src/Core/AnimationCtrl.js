@@ -8,9 +8,10 @@ export class AnimationCtrl {
     }
 	
 	next() {
-		if ( ! this.isCompleted ) {
-			this.currentAsset++;
+		if (  this.isCompleted ) {
+			return this.currentAsset = 0;
 		}
+		this.currentAsset++;
 	}
 	
 	shouldAnimate() {
