@@ -51,7 +51,7 @@ unclear, don't hesitate to reach out.
     * ~~Rocks can be jumped over~~
     * ~~Trees can NOT be jumped over~~
   * Anything else you'd like to add to the skier's jumping ability, go for it!
-    ***Sorry, but no new ideas about jumping ability, but skier is jumping like a charm.***
+    ***Sorry, but no new ideas about jumping ability, but skier is jumping like a charm. Press SPACE BAR key to see that***
   
   ***Skier jump ability added as detailed in https://github.com/amorimjj/ski/commit/9cf531fcc9dbbe4ab84c6aef6119c9455a2617bb***
   
